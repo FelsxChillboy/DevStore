@@ -1,0 +1,78 @@
+'use client'
+
+import { templates, services } from '@/data/products'
+import { formatPrice, Product } from '@/lib/utils'
+
+function ProductCard({ product }: { product: Product }) {
+  const openModal = (id: number, type: string) => {
+    window.dispatchEvent(new CustomEvent('open-modal', { detail: { id, type } }))
+  }
+
+  const isService = product.category === 'service'
+
+  return (
+    <div
+      className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${product.cardClass}`}
+    >
+      <div className="mb-4 flex items-start justify-between">
+        <div>
+          <h3 className="font-heading text-xl font-bold text-text">{product.name}</h3>
+          <p className="mt-1 text-2xl font-bold text-primary">
+            {product.priceDisplay || formatPrice(product.price)}
+          </p>
+        </div>
+        <span className={`badge border-transparent ${product.badgeColor}`}>{product.badge}</span>
+      </div>
+
+      <ul className="mb-6 space-y-2">
+        {product.features.map((feature, i) => (
+          <li key={i} className="flex items-center gap-2 text-sm text-text-secondary">
+            <svg className="h-4 w-4 flex-shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+            {feature}
+          </li>
+        ))}
+      </ul>
+
+      <button
+        onClick={() => openModal(product.id, product.category)}
+        className={isService ? 'btn-accent w-full text-sm font-bold' : 'btn-primary w-full text-sm'}
+      >
+        {isService ? 'Order + Upload CV' : 'Pesan Sekarang'}
+      </button>
+    </div>
+  )
+}
+
+export default function ProductSection() {
+  return (
+    <section id="produk" className="bg-muted py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="badge border-primary/20 bg-primary-light text-primary mb-4">Produk Kami</span>
+          <h2 className="font-heading text-3xl font-bold text-text md:text-4xl">Template Portfolio</h2>
+          <p className="mt-3 text-text-secondary">Pilih template portfolio siap pakai dengan harga terjangkau!</p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {templates.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+
+        <div className="mx-auto mt-20 max-w-3xl text-center">
+          <span className="badge border-primary/20 bg-primary-light text-primary mb-4">Jasa Pembuatan</span>
+          <h2 className="font-heading text-3xl font-bold text-text md:text-4xl">Jasa Portfolio Custom</h2>
+          <p className="mt-3 text-text-secondary">Serahkan portfolio-mu pada tim kami. Cukup kirim CV, kami yang buatkan!</p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {services.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
