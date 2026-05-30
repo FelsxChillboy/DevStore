@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  distDir: '.next',
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+};
 
 export default nextConfig;
