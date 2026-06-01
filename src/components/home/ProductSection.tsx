@@ -18,13 +18,13 @@ function ProductCard({ product }: { product: Product }) {
       data-aos-delay={String((product.id - 1) * 100)}
     >
       {product.image && (
-        <Link href={`/produk/${product.slug}`} className="block aspect-video overflow-hidden">
+        <div className="block aspect-video overflow-hidden">
           <img
             src={product.image}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-500"
           />
-        </Link>
+        </div>
       )}
       <div className="p-6">
       <div className="mb-4 flex items-start justify-between">
