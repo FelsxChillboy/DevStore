@@ -46,6 +46,16 @@ function ProductCard({ product }: { product: Product }) {
         <span className={`badge border-transparent ${product.badgeColor}`}>{product.badge}</span>
       </div>
 
+      <ul className="mb-6 space-y-2">
+        {product.features.map((feature, i) => (
+          <li key={i} className="flex items-center gap-2 text-sm text-text-secondary">
+            <svg className="h-4 w-4 flex-shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+            {feature}
+          </li>
+        ))}
+      </ul>
 
       {product.demoUrl && (
         <Link
