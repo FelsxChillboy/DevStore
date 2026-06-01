@@ -68,6 +68,14 @@ function UMKMProductCard({ product }: { product: Product }) {
         </div>
       )}
 
+      {product.demoUrl && (
+        <Link
+          href={product.demoUrl}
+          className="btn-outline mb-2 block w-full text-center text-sm"
+        >
+          Lihat Demo
+        </Link>
+      )}
       {product.briefUrl ? (
         <div className="flex flex-col gap-2">
           <Link href={product.briefUrl} target="_blank" className="btn-accent w-full text-sm font-bold text-center">

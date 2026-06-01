@@ -29,4 +29,5 @@ export interface Product {
   description?: string
   includes?: string[]
   howToUse?: string[]
+  demoUrl?: string
 }

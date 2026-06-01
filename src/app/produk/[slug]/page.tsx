@@ -128,6 +128,11 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row">
+              {product.demoUrl && (
+                <Link href={product.demoUrl} className="btn-outline flex-1 text-center">
+                  Lihat Demo
+                </Link>
+              )}
               <a
                 href={waUrl}
                 target="_blank"

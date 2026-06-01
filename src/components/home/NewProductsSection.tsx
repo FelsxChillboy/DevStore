@@ -46,6 +46,14 @@ function NewProductCard({ product }: { product: Product }) {
         ))}
       </ul>
 
+      {product.demoUrl && (
+        <Link
+          href={product.demoUrl}
+          className="btn-outline mb-2 block w-full text-center text-sm"
+        >
+          Lihat Demo
+        </Link>
+      )}
       <button onClick={() => openModal(product.id, product.category)} className="btn-primary w-full text-sm">
         Pesan Sekarang
       </button>

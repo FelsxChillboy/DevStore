@@ -57,6 +57,14 @@ function ProductCard({ product }: { product: Product }) {
         ))}
       </ul>
 
+      {product.demoUrl && (
+        <Link
+          href={product.demoUrl}
+          className="btn-outline mb-2 block w-full text-center text-sm"
+        >
+          Lihat Demo
+        </Link>
+      )}
       <button
         onClick={() => openModal(product.id, product.category)}
         className={isService ? 'btn-accent w-full text-sm font-bold' : 'btn-primary w-full text-sm'}
