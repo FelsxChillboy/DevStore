@@ -3,6 +3,7 @@ import { Product } from '@/lib/utils'
 export const newProducts: Product[] = [
   {
     id: 10,
+    slug: 'devkit-components',
     name: 'DevKit Components',
     category: 'template',
     price: 35000,
@@ -13,6 +14,7 @@ export const newProducts: Product[] = [
   },
   {
     id: 11,
+    slug: 'coming-soon-template',
     name: 'Coming Soon Template',
     category: 'template',
     price: 25000,
@@ -23,6 +25,7 @@ export const newProducts: Product[] = [
   },
   {
     id: 12,
+    slug: 'link-in-bio-template',
     name: 'Link-in-Bio Template',
     category: 'template',
     price: 20000,
@@ -33,6 +36,7 @@ export const newProducts: Product[] = [
   },
   {
     id: 13,
+    slug: 'resume-cv-website',
     name: 'Resume/CV Website',
     category: 'template',
     price: 30000,

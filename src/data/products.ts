@@ -1,8 +1,10 @@
 import { Product } from '@/lib/utils'
+import { newProducts } from './new-products'
 
 export const templates: Product[] = [
   {
     id: 1,
+    slug: 'portfolio-basic',
     name: 'Portfolio Basic',
     category: 'template',
     price: 25000,
@@ -13,6 +15,7 @@ export const templates: Product[] = [
   },
   {
     id: 2,
+    slug: 'portfolio-pro',
     name: 'Portfolio Pro',
     category: 'template',
     price: 50000,
@@ -23,6 +26,7 @@ export const templates: Product[] = [
   },
   {
     id: 3,
+    slug: 'portfolio-premium',
     name: 'Portfolio Premium',
     category: 'template',
     price: 100000,
@@ -36,6 +40,7 @@ export const templates: Product[] = [
 export const services: Product[] = [
   {
     id: 4,
+    slug: 'jasa-portfolio-starter',
     name: 'Jasa Portfolio Starter',
     category: 'service',
     price: 75000,
@@ -46,6 +51,7 @@ export const services: Product[] = [
   },
   {
     id: 5,
+    slug: 'jasa-portfolio-professional',
     name: 'Jasa Portfolio Professional',
     category: 'service',
     price: 150000,
@@ -56,6 +62,7 @@ export const services: Product[] = [
   },
   {
     id: 6,
+    slug: 'jasa-portfolio-executive',
     name: 'Jasa Portfolio Executive',
     category: 'service',
     price: 250000,
@@ -69,6 +76,7 @@ export const services: Product[] = [
 export const umkm: Product[] = [
   {
     id: 7,
+    slug: 'template-website-umkm',
     name: 'Template Website UMKM',
     category: 'umkm',
     priceDisplay: 'Rp50K–200K',
@@ -86,6 +94,7 @@ export const umkm: Product[] = [
   },
   {
     id: 8,
+    slug: 'jasa-landing-page-umkm',
     name: 'Jasa Landing Page UMKM',
     category: 'umkm',
     priceDisplay: 'Rp150K–500K',
@@ -99,6 +108,7 @@ export const umkm: Product[] = [
   },
   {
     id: 9,
+    slug: 'template-ppt-presentasi',
     name: 'Template PPT Presentasi',
     category: 'umkm',
     priceDisplay: 'Rp15K–75K',
@@ -111,8 +121,12 @@ export const umkm: Product[] = [
   },
 ]
 
-export const allProducts = [...templates, ...services, ...umkm]
+export const allProducts = [...templates, ...services, ...umkm, ...newProducts]
 
 export function getProductById(id: number) {
   return allProducts.find(p => p.id === id)
+}
+
+export function getProductBySlug(slug: string) {
+  return allProducts.find(p => p.slug === slug)
 }

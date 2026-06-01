@@ -20,6 +20,22 @@
   --font-heading: 'Plus Jakarta Sans', sans-serif;
 }
 
+.dark {
+  --color-primary: #60A5FA;
+  --color-primary-dark: #3B82F6;
+  --color-primary-light: #1E3A5F;
+  --color-accent: #38BDF8;
+  --color-accent-dark: #0EA5E9;
+  --color-surface: #1E293B;
+  --color-muted: #0F172A;
+  --color-border: #334155;
+  --color-text: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #64748B;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-border) transparent;
@@ -103,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @utility btn-outline {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-border bg-white px-6 py-3 font-semibold text-text transition-all duration-300 hover:border-primary hover:bg-primary-light hover:text-primary active:scale-[0.97];
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-border bg-surface px-6 py-3 font-semibold text-text transition-all duration-300 hover:border-primary hover:bg-primary-light hover:text-primary active:scale-[0.97];
 }
 
 @utility btn-accent {
@@ -115,7 +131,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @utility input-field {
-  @apply w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-all duration-200 placeholder:text-text-muted focus:border-primary/40 focus:ring-2 focus:ring-primary/10;
+  @apply w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text outline-none transition-all duration-200 placeholder:text-text-muted focus:border-primary/40 focus:ring-2 focus:ring-primary/10;
 }
 
 .modal-overlay {
@@ -137,7 +153,7 @@ h1, h2, h3, h4, h5, h6 {
   max-height: 90vh;
   overflow-y: auto;
   border-radius: 1rem;
-  background: white;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   padding: 1.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -152,7 +168,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 0.75rem;
   border-radius: 0.75rem;
-  background: #2563EB;
+  background: var(--color-primary);
   padding: 0.75rem 1.25rem;
   color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);

@@ -1,51 +1,66 @@
 'use client'
 
 import { useState } from 'react'
-import { WA_ADMIN } from '@/lib/utils'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { buildWaUrl } from '@/lib/utils'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 
-type Paket = 'Starter - Rp150.000' | 'Professional - Rp300.000' | 'Premium - Rp500.000'
+const briefSchema = z.object({
+  nama: z.string().min(1, 'Nama wajib diisi'),
+  usaha: z.string().min(1, 'Nama usaha wajib diisi'),
+  jenis: z.string().min(1, 'Pilih jenis usaha'),
+  deskripsi: z.string().min(1, 'Deskripsi wajib diisi'),
+  target: z.string().optional(),
+  unggulan: z.string().optional(),
+  warna: z.string().optional(),
+  contoh: z.string().optional(),
+  wa: z.string().min(1, 'Nomor WhatsApp wajib diisi'),
+  alamat: z.string().optional(),
+  foto: z.string().optional(),
+  paket: z.string().min(1, 'Pilih paket'),
+  catatan: z.string().optional(),
+})
 
-const PAKET_LIST: { label: string; value: Paket; sub: string }[] = [
+type BriefForm = z.infer<typeof briefSchema>
+
+const PAKET_LIST = [
   { label: 'Starter', value: 'Starter - Rp150.000', sub: 'Rp150K' },
   { label: 'Professional', value: 'Professional - Rp300.000', sub: 'Rp300K' },
   { label: 'Premium', value: 'Premium - Rp500.000', sub: 'Rp500K' },
 ]
 
 export default function BriefFormPage() {
-  const [form, setForm] = useState({
-    nama: '', usaha: '', jenis: '', deskripsi: '', target: '',
-    unggulan: '', warna: '', contoh: '', wa: '', alamat: '',
-    foto: '', paket: '' as Paket | '', catatan: '',
-  })
   const [submitting, setSubmitting] = useState(false)
 
-  const update = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }))
+  const { register, handleSubmit, formState: { errors } } = useForm<BriefForm>({
+    resolver: zodResolver(briefSchema),
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = (data: BriefForm) => {
     setSubmitting(true)
 
     const message = `ORDER LANDING PAGE DevStore
 
-🧑 Nama: ${form.nama || '-'}
-🏪 Nama Usaha: ${form.usaha || '-'}
-📂 Jenis: ${form.jenis || '-'}
-📝 Deskripsi: ${form.deskripsi || '-'}
-🎯 Target Pelanggan: ${form.target || '-'}
-⭐ Produk Unggulan: ${form.unggulan || '-'}
-🎨 Warna Brand: ${form.warna || '-'}
-🔗 Contoh Website: ${form.contoh || '-'}
-📱 WA Bisnis: ${form.wa || '-'}
-📍 Alamat: ${form.alamat || '-'}
-🖼️ Link Foto: ${form.foto || '-'}
-📦 Paket: ${form.paket || '-'}
-📋 Catatan: ${form.catatan || '-'}
+🧑 Nama: ${data.nama}
+🏪 Nama Usaha: ${data.usaha}
+📂 Jenis: ${data.jenis}
+📝 Deskripsi: ${data.deskripsi}
+🎯 Target Pelanggan: ${data.target || '-'}
+⭐ Produk Unggulan: ${data.unggulan || '-'}
+🎨 Warna Brand: ${data.warna || '-'}
+🔗 Contoh Website: ${data.contoh || '-'}
+📱 WA Bisnis: ${data.wa}
+📍 Alamat: ${data.alamat || '-'}
+🖼️ Link Foto: ${data.foto || '-'}
+📦 Paket: ${data.paket}
+📋 Catatan: ${data.catatan || '-'}
 
 Mohon segera dikonfirmasi, terima kasih kak!`
 
-    window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(message)}`, '_blank')
+    window.open(buildWaUrl(message), '_blank')
     setTimeout(() => setSubmitting(false), 3000)
   }
 
@@ -60,13 +75,13 @@ Mohon segera dikonfirmasi, terima kasih kak!`
             <p className="mt-2 text-text-secondary">Lengkapi form di bawah, tim kami akan proses dalam 1x24 jam</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-white p-6 md:p-8 space-y-5">
-            <Input label="Nama Pemilik Usaha" required value={form.nama} onChange={(v) => update('nama', v)} placeholder="Masukkan nama lengkap" />
-            <Input label="Nama Usaha / Brand" required value={form.usaha} onChange={(v) => update('usaha', v)} placeholder="Nama toko, warung, atau brand kamu" />
+          <form onSubmit={handleSubmit(onSubmit)} className="rounded-2xl border border-border bg-white p-6 md:p-8 space-y-5">
+            <Input label="Nama Pemilik Usaha" required error={errors.nama?.message} placeholder="Masukkan nama lengkap" {...register('nama')} />
+            <Input label="Nama Usaha / Brand" required error={errors.usaha?.message} placeholder="Nama toko, warung, atau brand kamu" {...register('usaha')} />
 
             <div>
               <label className="input-label">Jenis Usaha <span className="text-red-500">*</span></label>
-              <select className="input-field" required value={form.jenis} onChange={(e) => update('jenis', e.target.value)}>
+              <select className="input-field" {...register('jenis')}>
                 <option value="">Pilih jenis usaha</option>
                 <option value="Kuliner">Kuliner / Makanan</option>
                 <option value="Fashion">Fashion / Busana</option>
@@ -74,16 +89,17 @@ Mohon segera dikonfirmasi, terima kasih kak!`
                 <option value="Toko Online">Toko Online</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
+              {errors.jenis && <p className="mt-1 text-xs text-red-500">{errors.jenis.message}</p>}
             </div>
 
-            <Textarea label="Deskripsi Usaha" required value={form.deskripsi} onChange={(v) => update('deskripsi', v)} placeholder="Ceritakan tentang usaha kamu secara singkat" />
-            <Input label="Target Pelanggan" value={form.target} onChange={(v) => update('target', v)} placeholder="Contoh: mahasiswa, ibu rumah tangga, pekerja kantoran" />
-            <Textarea label="Produk / Layanan Unggulan" value={form.unggulan} onChange={(v) => update('unggulan', v)} placeholder="Sebutkan 3-5 produk/layanan terlaris kamu" />
-            <Input label="Warna Favorit / Referensi Brand" value={form.warna} onChange={(v) => update('warna', v)} placeholder="Contoh: hijau tosca + putih, atau link referensi" />
-            <Input label="Contoh Website yang Disukai (opsional)" value={form.contoh} onChange={(v) => update('contoh', v)} placeholder="https://contoh-website.com" />
-            <Input label="Nomor WhatsApp Bisnis" required value={form.wa} onChange={(v) => update('wa', v)} placeholder="08xxxxxxxxxx" type="tel" />
-            <Textarea label="Alamat / Lokasi Usaha" value={form.alamat} onChange={(v) => update('alamat', v)} placeholder="Alamat lengkap lokasi usaha" />
-            <Input label="Link Foto Produk (Google Drive)" value={form.foto} onChange={(v) => update('foto', v)} placeholder="https://drive.google.com/..." type="url" />
+            <Textarea label="Deskripsi Usaha" required error={errors.deskripsi?.message} placeholder="Ceritakan tentang usaha kamu secara singkat" {...register('deskripsi')} />
+            <Input label="Target Pelanggan" placeholder="Contoh: mahasiswa, ibu rumah tangga, pekerja kantoran" {...register('target')} />
+            <Textarea label="Produk / Layanan Unggulan" placeholder="Sebutkan 3-5 produk/layanan terlaris kamu" {...register('unggulan')} />
+            <Input label="Warna Favorit / Referensi Brand" placeholder="Contoh: hijau tosca + putih, atau link referensi" {...register('warna')} />
+            <Input label="Contoh Website yang Disukai (opsional)" placeholder="https://contoh-website.com" {...register('contoh')} />
+            <Input label="Nomor WhatsApp Bisnis" required error={errors.wa?.message} placeholder="08xxxxxxxxxx" type="tel" {...register('wa')} />
+            <Textarea label="Alamat / Lokasi Usaha" placeholder="Alamat lengkap lokasi usaha" {...register('alamat')} />
+            <Input label="Link Foto Produk (Google Drive)" placeholder="https://drive.google.com/..." type="url" {...register('foto')} />
 
             <div>
               <label className="input-label">Paket yang Dipilih <span className="text-red-500">*</span></label>
@@ -91,19 +107,13 @@ Mohon segera dikonfirmasi, terima kasih kak!`
                 {PAKET_LIST.map((p) => (
                   <label
                     key={p.value}
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 text-sm transition-all ${
-                      form.paket === p.value
-                        ? 'border-primary bg-primary-light text-primary'
-                        : 'border-border bg-white text-text-secondary hover:border-primary/40'
-                    }`}
+                    className="flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm text-text-secondary transition-all hover:border-primary/40 has-checked:border-primary has-checked:bg-primary-light has-checked:text-primary"
                   >
                     <input
                       type="radio"
-                      name="paket"
                       value={p.value}
-                      checked={form.paket === p.value}
-                      onChange={(e) => update('paket', e.target.value)}
                       className="sr-only"
+                      {...register('paket')}
                     />
                     <div>
                       <span className="font-medium">{p.label}</span>
@@ -113,9 +123,10 @@ Mohon segera dikonfirmasi, terima kasih kak!`
                   </label>
                 ))}
               </div>
+              {errors.paket && <p className="mt-1 text-xs text-red-500">{errors.paket.message}</p>}
             </div>
 
-            <Textarea label="Catatan Tambahan" value={form.catatan} onChange={(v) => update('catatan', v)} placeholder="Ada request khusus?" />
+            <Textarea label="Catatan Tambahan" placeholder="Ada request khusus?" {...register('catatan')} />
 
             <button type="submit" disabled={submitting} className="btn-primary w-full text-base">
               {submitting ? 'Memproses...' : 'Kirim Brief → Hubungi WA Admin'}
@@ -132,24 +143,28 @@ Mohon segera dikonfirmasi, terima kasih kak!`
   )
 }
 
-function Input({ label, value, onChange, placeholder, required, type = 'text' }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder: string; required?: boolean; type?: string
+function Input({ label, placeholder, type = 'text', required, error, ...props }: {
+  label: string; placeholder: string; type?: string; required?: boolean; error?: string
+  [key: string]: unknown
 }) {
   return (
     <div>
       <label className="input-label">{label} {required && <span className="text-red-500">*</span>}</label>
-      <input type={type} className="input-field" required={required} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+      <input type={type} className="input-field" placeholder={placeholder} {...props} />
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   )
 }
 
-function Textarea({ label, value, onChange, placeholder, required }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder: string; required?: boolean
+function Textarea({ label, placeholder, required, error, ...props }: {
+  label: string; placeholder: string; required?: boolean; error?: string
+  [key: string]: unknown
 }) {
   return (
     <div>
       <label className="input-label">{label} {required && <span className="text-red-500">*</span>}</label>
-      <textarea className="input-field" rows={3} required={required} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+      <textarea className="input-field" rows={3} placeholder={placeholder} {...props} />
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   )
 }

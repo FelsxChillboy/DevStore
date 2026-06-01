@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { WA_ADMIN } from '@/lib/utils'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const NAV_LINKS = [
   { href: '#produk', label: 'Produk' },
@@ -47,7 +48,7 @@ export default function Navbar() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -57,6 +58,7 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <ThemeToggle />
           <a
             href={waUrl}
             target="_blank"
@@ -103,6 +105,9 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <div className="px-4 py-2">
+            <ThemeToggle />
+          </div>
           <a
             href={waUrl}
             target="_blank"

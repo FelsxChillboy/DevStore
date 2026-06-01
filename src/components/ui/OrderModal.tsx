@@ -2,25 +2,35 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { getProductById } from '@/data/products'
 import { formatPrice, buildWaUrl, Product } from '@/lib/utils'
 
-interface FormState {
-  name: string
-  wa: string
-  email: string
-  notes: string
-  cvLink: string
-  description: string
-}
+const orderSchema = z.object({
+  name: z.string().min(1, 'Nama lengkap wajib diisi'),
+  wa: z.string().min(1, 'Nomor WhatsApp wajib diisi'),
+  email: z.string().optional(),
+  cvLink: z.string().optional(),
+  description: z.string().optional(),
+  notes: z.string().optional(),
+})
+
+type FormData = z.infer<typeof orderSchema>
 
 export default function OrderModal() {
   const [open, setOpen] = useState(false)
   const [productId, setProductId] = useState<number | null>(null)
   const [productType, setProductType] = useState<string>('template')
-  const [form, setForm] = useState<FormState>({ name: '', wa: '', email: '', notes: '', cvLink: '', description: '' })
   const [submitting, setSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+
+  const isService = productType === 'service'
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+    resolver: zodResolver(orderSchema),
+  })
 
   const product: Product | null = productId ? getProductById(productId) ?? null : null
 
@@ -28,9 +38,9 @@ export default function OrderModal() {
     const detail = (e as CustomEvent).detail
     setProductId(detail.id)
     setProductType(detail.type)
-    setForm({ name: '', wa: '', email: '', notes: '', cvLink: '', description: '' })
+    reset()
     setOpen(true)
-  }, [])
+  }, [reset])
 
   useEffect(() => {
     window.addEventListener('open-modal', openModal)
@@ -46,38 +56,34 @@ export default function OrderModal() {
     ? product.priceDisplay || formatPrice(product.price)
     : ''
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!form.name || !form.wa) {
-      alert('Harap isi Nama dan Nomor WhatsApp!')
-      return
-    }
-    if (productType === 'service' && (!form.email || !form.cvLink)) {
+  const onSubmit = (data: FormData) => {
+    if (!product) return
+
+    if (isService && (!data.email || !data.cvLink)) {
       alert('Harap isi Email dan Link CV untuk order jasa!')
       return
     }
-    if (!product) return
 
-    const message = productType === 'service'
+    const message = isService
       ? `Halo DevStore! Saya ingin ORDER JASA PORTFOLIO:
 
 📦 Paket: ${product.name}
 💰 Harga: ${productPrice}
-👤 Nama: ${form.name}
-📱 WA: ${form.wa}
-📧 Email: ${form.email}
-📎 Link CV: ${form.cvLink}
-📝 Deskripsi: ${form.description || '-'}
-📋 Catatan: ${form.notes || '-'}
+👤 Nama: ${data.name}
+📱 WA: ${data.wa}
+📧 Email: ${data.email || '-'}
+📎 Link CV: ${data.cvLink || '-'}
+📝 Deskripsi: ${data.description || '-'}
+📋 Catatan: ${data.notes || '-'}
 
 Mohon segera dikonfirmasi, terima kasih!`
       : `Halo DevStore, saya ingin order:
 
 📦 Produk: ${product.name}
 💰 Harga: ${productPrice}
-👤 Nama: ${form.name}
-📱 WA: ${form.wa}
-📝 Catatan: ${form.notes || '-'}
+👤 Nama: ${data.name}
+📱 WA: ${data.wa}
+📝 Catatan: ${data.notes || '-'}
 
 Mohon konfirmasinya, terima kasih!`
 
@@ -113,37 +119,41 @@ Mohon konfirmasinya, terima kasih!`
             <p className="mt-1 text-sm text-text-secondary">{productPrice}</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label htmlFor="name" className="input-label">Nama Lengkap <span className="text-red-500">*</span></label>
-              <input id="name" type="text" className="input-field" placeholder="Masukkan nama lengkap" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input id="name" type="text" className="input-field" placeholder="Masukkan nama lengkap" {...register('name')} />
+              {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
             </div>
             <div>
               <label htmlFor="wa" className="input-label">Nomor WhatsApp <span className="text-red-500">*</span></label>
-              <input id="wa" type="tel" className="input-field" placeholder="08xxxxxxxxxx" required value={form.wa} onChange={(e) => setForm({ ...form, wa: e.target.value })} />
+              <input id="wa" type="tel" className="input-field" placeholder="08xxxxxxxxxx" {...register('wa')} />
+              {errors.wa && <p className="mt-1 text-xs text-red-500">{errors.wa.message}</p>}
             </div>
 
-            {productType === 'service' && (
+            {isService && (
               <>
                 <div>
                   <label htmlFor="email" className="input-label">Email <span className="text-red-500">*</span></label>
-                  <input id="email" type="email" className="input-field" placeholder="contoh@email.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  <input id="email" type="email" className="input-field" placeholder="contoh@email.com" {...register('email')} />
+                  {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                 </div>
                 <div>
                   <label htmlFor="cvLink" className="input-label">Link CV / Google Drive <span className="text-red-500">*</span></label>
-                  <input id="cvLink" type="url" className="input-field" placeholder="https://drive.google.com/..." required value={form.cvLink} onChange={(e) => setForm({ ...form, cvLink: e.target.value })} />
+                  <input id="cvLink" type="url" className="input-field" placeholder="https://drive.google.com/..." {...register('cvLink')} />
+                  {errors.cvLink && <p className="mt-1 text-xs text-red-500">{errors.cvLink.message}</p>}
                   <p className="mt-1 text-xs text-text-muted">Upload CV ke Google Drive dulu, lalu paste link-nya di sini</p>
                 </div>
                 <div>
                   <label htmlFor="description" className="input-label">Deskripsi Singkat</label>
-                  <textarea id="description" className="input-field" rows={3} placeholder="Jurusan / semester / pengalaman organisasi / dll" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                  <textarea id="description" className="input-field" rows={3} placeholder="Jurusan / semester / pengalaman organisasi / dll" {...register('description')} />
                 </div>
               </>
             )}
 
             <div>
               <label htmlFor="notes" className="input-label">Catatan Tambahan</label>
-              <textarea id="notes" className="input-field" rows={2} placeholder="Ada request khusus?" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+              <textarea id="notes" className="input-field" rows={2} placeholder="Ada request khusus?" {...register('notes')} />
             </div>
 
             <button type="submit" disabled={submitting} className="btn-primary w-full text-base">
