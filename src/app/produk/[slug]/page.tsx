@@ -1,14 +1,40 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { templates, services, umkm, getProductBySlug } from '@/data/products'
 import { formatPrice, buildWaUrl } from '@/lib/utils'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import WhatsAppFloat from '@/components/ui/WhatsAppFloat'
+import Breadcrumb from '@/components/ui/Breadcrumb'
+import { ProductJsonLd } from '@/components/ui/JsonLd'
 
 export function generateStaticParams() {
   const all = [...templates, ...services, ...umkm]
   return all.map((p) => ({ slug: p.slug }))
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const product = getProductBySlug(params.slug)
+  if (!product) return { title: 'Produk Tidak Ditemukan - DevStore' }
+
+  const price = product.priceDisplay || `Rp ${product.price.toLocaleString('id-ID')}`
+  const description = `${product.name} - ${product.features.slice(0, 2).join(', ')}. Harga ${price}. Pesan via WhatsApp.`
+
+  const url = `https://dev-store-xi.vercel.app/produk/${product.slug}`
+
+  return {
+    title: `${product.name} - DevStore`,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${product.name} - DevStore`,
+      description,
+      url,
+      type: 'website',
+      siteName: 'DevStore',
+    },
+  }
 }
 
 function getCategoryLabel(category: string) {
@@ -30,15 +56,20 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
 
   return (
     <>
+      <ProductJsonLd
+        name={product.name}
+        description={`${product.name} - ${product.features.slice(0, 2).join(', ')}`}
+        price={price}
+        category={cat.label}
+        url={`https://dev-store-xi.vercel.app/produk/${product.slug}`}
+      />
       <Navbar />
       <main className="min-h-screen bg-muted pt-24 pb-12">
         <div className="mx-auto max-w-4xl px-4">
-          <Link href="/#produk" className="mb-6 inline-flex items-center gap-1 text-sm text-text-secondary transition-colors hover:text-primary">
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Kembali ke Produk
-          </Link>
+          <Breadcrumb items={[
+            { label: 'Produk', href: '/#produk' },
+            { label: product.name },
+          ]} />
 
           <div className={`rounded-2xl border p-8 md:p-10 ${product.cardClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
@@ -60,7 +91,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             <ul className="mb-8 space-y-3">
               {product.features.map((feature, i) => (
                 <li key={i} className="flex items-center gap-3 text-text-secondary">
-                  <svg className="h-5 w-5 flex-shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 flex-shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
                   {feature}

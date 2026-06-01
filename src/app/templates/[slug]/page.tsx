@@ -1,12 +1,34 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { getTemplateBySlug } from '@/data/template-previews'
 import { WA_ADMIN } from '@/lib/utils'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import WhatsAppFloat from '@/components/ui/WhatsAppFloat'
+import Breadcrumb from '@/components/ui/Breadcrumb'
 
 export function generateStaticParams() {
   return [{ slug: 'kuliner' }, { slug: 'fashion' }, { slug: 'jasa' }]
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const template = getTemplateBySlug(params.slug)
+  if (!template) return { title: 'Template Tidak Ditemukan - DevStore' }
+
+  const url = `https://dev-store-xi.vercel.app/templates/${template.slug}`
+
+  return {
+    title: `${template.title} - DevStore`,
+    description: template.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${template.title} - DevStore`,
+      description: template.description,
+      url,
+      type: 'website',
+      siteName: 'DevStore',
+    },
+  }
 }
 
 export default function TemplatePreviewPage({ params }: { params: { slug: string } }) {
@@ -20,6 +42,10 @@ export default function TemplatePreviewPage({ params }: { params: { slug: string
       <Navbar />
       <main className="min-h-screen bg-muted pt-24">
         <div className="mx-auto max-w-7xl px-4 py-12">
+          <Breadcrumb items={[
+            { label: 'Template', href: '/#produk' },
+            { label: template.title },
+          ]} />
           <div className="text-center mb-10">
             <span className="badge border-primary/20 bg-primary-light text-primary mb-4">Preview Template</span>
             <h1 className="font-heading text-3xl font-bold text-text md:text-4xl">{template.title}</h1>

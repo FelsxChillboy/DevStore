@@ -36,8 +36,8 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5">
-        <a href="#" className="flex items-center gap-2.5">
-          <svg viewBox="0 0 36 36" fill="none" className="h-9 w-9">
+        <a href="#" className="flex items-center gap-2.5" aria-label="DevStore Beranda">
+          <svg viewBox="0 0 36 36" fill="none" className="h-9 w-9" role="img" aria-label="Logo DevStore">
             <rect width="36" height="36" rx="8" fill="#2563EB" />
             <path d="M14 11L9 18L14 25" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M22 11L27 18L22 25" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
