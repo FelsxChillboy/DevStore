@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { templates, services, umkm, getProductBySlug } from '@/data/products'
+import { templates, services, umkm, newProducts, getProductBySlug, allProducts } from '@/data/products'
 import { formatPrice, buildWaUrl } from '@/lib/utils'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!product) return { title: 'Produk Tidak Ditemukan - DevStore' }
 
   const price = product.priceDisplay || `Rp ${product.price.toLocaleString('id-ID')}`
-  const description = `${product.name} - ${product.features.slice(0, 2).join(', ')}. Harga ${price}. Pesan via WhatsApp.`
+  const description = product.description || `${product.name} - ${product.features.slice(0, 2).join(', ')}. Harga ${price}. Pesan via WhatsApp.`
 
   const url = `https://dev-store-xi.vercel.app/produk/${product.slug}`
 
@@ -54,11 +54,15 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
   const price = product.priceDisplay || formatPrice(product.price)
   const waUrl = buildWaUrl(`Halo DevStore, saya tertarik dengan ${product.name} (${price}). Mohon informasinya, terima kasih!`)
 
+  const related = allProducts
+    .filter((p) => p.slug !== product.slug && p.category === product.category)
+    .slice(0, 3)
+
   return (
     <>
       <ProductJsonLd
         name={product.name}
-        description={`${product.name} - ${product.features.slice(0, 2).join(', ')}`}
+        description={product.description || `${product.name} - ${product.features.slice(0, 2).join(', ')}`}
         price={price}
         category={cat.label}
         url={`https://dev-store-xi.vercel.app/produk/${product.slug}`}
@@ -142,6 +146,74 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
               )}
             </div>
           </div>
+
+          {product.description && (
+            <section className="mt-10">
+              <h2 className="mb-4 font-heading text-2xl font-bold text-text">Tentang Produk</h2>
+              <div className="rounded-2xl border border-border bg-white p-6 md:p-8">
+                <p className="text-text-secondary leading-relaxed">{product.description}</p>
+              </div>
+            </section>
+          )}
+
+          {product.includes && product.includes.length > 0 && (
+            <section className="mt-10">
+              <h2 className="mb-4 font-heading text-2xl font-bold text-text">Apa yang Didapatkan?</h2>
+              <div className="rounded-2xl border border-border bg-white p-6 md:p-8">
+                <ul className="space-y-3">
+                  {product.includes.map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-text-secondary">
+                      <svg className="h-5 w-5 flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          )}
+
+          {product.howToUse && product.howToUse.length > 0 && (
+            <section className="mt-10">
+              <h2 className="mb-4 font-heading text-2xl font-bold text-text">Cara Mendapatkan</h2>
+              <div className="rounded-2xl border border-border bg-white p-6 md:p-8">
+                <ol className="space-y-4">
+                  {product.howToUse.map((step, i) => (
+                    <li key={i} className="flex gap-4 text-text-secondary">
+                      <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                        {i + 1}
+                      </span>
+                      <span className="pt-0.5 leading-relaxed">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
+          )}
+
+          {related.length > 0 && (
+            <section className="mt-10">
+              <h2 className="mb-4 font-heading text-2xl font-bold text-text">Produk Terkait</h2>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {related.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/produk/${item.slug}`}
+                    className={`rounded-2xl border p-5 transition-all hover:shadow-lg ${item.cardClass}`}
+                  >
+                    {item.image && (
+                      <div className="mb-3 overflow-hidden rounded-xl border">
+                        <img src={item.image} alt={item.name} className="w-full" />
+                      </div>
+                    )}
+                    <h3 className="font-heading font-bold text-text">{item.name}</h3>
+                    <p className="mt-1 text-sm text-primary font-semibold">{item.priceDisplay || formatPrice(item.price)}</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
       <Footer />

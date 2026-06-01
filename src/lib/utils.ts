@@ -26,4 +26,7 @@ export interface Product {
   briefUrl?: string
   icon?: string
   image?: string
+  description?: string
+  includes?: string[]
+  howToUse?: string[]
 }
