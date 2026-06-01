@@ -24,4 +24,5 @@ export interface Product {
   tagline?: string
   previewUrls?: { name: string; url: string }[]
   briefUrl?: string
+  icon?: string
 }

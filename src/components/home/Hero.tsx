@@ -1,4 +1,5 @@
 import { WA_ADMIN } from '@/lib/utils'
+import AnimatedCounter from '@/components/ui/AnimatedCounter'
 
 export default function Hero() {
   const waUrl = `https://wa.me/${WA_ADMIN}?text=Halo%20DevStore%2C%20saya%20mau%20tanya%20tentang%20produk`
@@ -18,7 +19,7 @@ export default function Hero() {
           <h1 className="font-heading text-4xl font-extrabold leading-tight text-text md:text-6xl lg:text-7xl">
             Build Faster.
             <br />
-            <span className="text-primary">Ship Smarter.</span>
+            <span className="gradient-text">Ship Smarter.</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary md:text-xl">
@@ -42,15 +43,21 @@ export default function Hero() {
 
           <div className="mt-16 grid grid-cols-3 gap-4 border-t border-border pt-10">
             <div className="text-center">
-              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">50+</div>
+              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">
+                <AnimatedCounter end={50} suffix="+" />
+              </div>
               <div className="mt-1 text-sm text-text-muted">Produk Digital</div>
             </div>
             <div className="text-center">
-              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">100+</div>
+              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">
+                <AnimatedCounter end={100} suffix="+" />
+              </div>
               <div className="mt-1 text-sm text-text-muted">Happy Clients</div>
             </div>
             <div className="text-center">
-              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">5.0</div>
+              <div className="font-heading text-3xl font-bold text-primary md:text-4xl">
+                <AnimatedCounter end={5} decimals={1} />
+              </div>
               <div className="mt-1 text-sm text-text-muted">Rating &#9733;</div>
             </div>
           </div>

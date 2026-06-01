@@ -4,20 +4,25 @@ export default function About() {
   const waUrl = `https://wa.me/${WA_ADMIN}?text=Halo%20DevStore%2C%20saya%20mau%20tanya%20tentang%20produk`
 
   return (
-    <section id="tentang" className="bg-muted py-20 md:py-28 border-t border-border">
-      <div className="mx-auto max-w-7xl px-4">
+    <section id="tentang" className="relative overflow-hidden bg-muted py-20 md:py-28">
+      <div className="divider-gradient" />
+      <div className="pointer-events-none absolute inset-0 pattern-dots opacity-50" />
+      <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-accent/5 blur-3xl animate-float" />
+      <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-primary/5 blur-3xl animate-float-delayed" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4">
         <div className="grid items-center gap-12 md:grid-cols-2">
           <div>
             <span className="badge border-primary/20 bg-primary-light text-primary mb-4">Tentang DevStore</span>
             <h2 className="font-heading text-3xl font-bold text-text md:text-4xl">
               Digital Products Marketplace untuk{' '}
-              <span className="text-primary">Semua Kalangan</span>
+              <span className="gradient-text">Semua Kalangan</span>
             </h2>
             <p className="mt-4 leading-relaxed text-text-secondary">
               DevStore adalah platform digital marketplace yang menyediakan template siap pakai, komponen UI premium, dan jasa pembuatan website. Kami hadir untuk membantu mahasiswa, developer, dan pelaku UMKM memiliki produk digital profesional dengan harga terjangkau.
             </p>
             <p className="mt-4 leading-relaxed text-text-secondary">
-              Dengan tagline <strong className="text-primary">"Build Faster. Ship Smarter."</strong>, kami berkomitmen untuk menyediakan solusi digital berkualitas tinggi yang bisa langsung digunakan.
+              Dengan tagline <strong className="text-primary">&ldquo;Build Faster. Ship Smarter.&rdquo;</strong>, kami berkomitmen untuk menyediakan solusi digital berkualitas tinggi yang bisa langsung digunakan.
             </p>
             <div className="mt-4 flex items-center gap-2">
               <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">

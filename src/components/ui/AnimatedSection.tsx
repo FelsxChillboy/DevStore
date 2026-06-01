@@ -5,49 +5,46 @@ import { useEffect, useRef, ReactNode } from 'react'
 interface Props {
   children: ReactNode
   className?: string
+  animation?: string
   delay?: number
+  duration?: number
 }
 
-export default function AnimatedSection({ children, className = '', delay = 0 }: Props) {
+export default function AnimatedSection({
+  children,
+  className = '',
+  animation = 'fade-up',
+  delay = 0,
+  duration = 800,
+}: Props) {
   const ref = useRef<HTMLDivElement>(null)
+  const initialized = useRef(false)
 
   useEffect(() => {
-    let observer: IntersectionObserver | null = null
+    if (initialized.current) return
+    initialized.current = true
+
+    async function initAOS() {
+      const AOS = (await import('aos')).default
+      await import('aos/dist/aos.css')
+      AOS.init({
+        duration,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 60,
+        disable: 'mobile',
+      })
+    }
+    initAOS()
+  }, [duration])
+
+  useEffect(() => {
     const el = ref.current
     if (!el) return
 
-    const initAOS = async () => {
-      const AOS = (await import('aos')).default
-      await import('aos/dist/aos.css')
-
-      AOS.init({
-        duration: 800,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 80,
-      })
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.setAttribute('data-aos', 'fade-up')
-              entry.target.setAttribute('data-aos-delay', String(delay))
-            }
-          })
-        },
-        { threshold: 0.1 }
-      )
-
-      observer.observe(el)
-    }
-
-    initAOS()
-
-    return () => {
-      observer?.disconnect()
-    }
-  }, [delay])
+    el.setAttribute('data-aos', animation)
+    if (delay) el.setAttribute('data-aos-delay', String(delay))
+  }, [animation, delay])
 
   return (
     <div ref={ref} className={className}>

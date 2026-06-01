@@ -18,6 +18,7 @@
   --color-warning: #F59E0B;
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --tracking-heading: -0.02em;
 }
 
 .dark {
@@ -49,10 +50,12 @@ body {
   font-family: var(--font-sans);
   color: var(--color-text);
   background: var(--color-muted);
+  line-height: 1.7;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  letter-spacing: var(--tracking-heading);
 }
 
 @keyframes float {
@@ -77,6 +80,11 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes progress {
   from { width: 0%; }
   to { width: 100%; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(37,99,235,0.08); }
+  50% { box-shadow: 0 0 30px rgba(37,99,235,0.15); }
 }
 
 @utility animate-float {
@@ -128,6 +136,24 @@ h1, h2, h3, h4, h5, h6 {
 
 @utility badge {
   @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold;
+}
+
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility pattern-dots {
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@utility divider-gradient {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
 
 @utility input-field {

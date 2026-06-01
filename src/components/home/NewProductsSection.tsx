@@ -9,14 +9,23 @@ function NewProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <div className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${product.cardClass}`}>
+    <div className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 ${product.cardClass}`}>
       <div className="absolute top-3 right-3">
         <span className={`badge border-transparent ${product.badgeColor}`}>{product.badge}</span>
       </div>
 
-      <div className="mb-4">
-        <h3 className="font-heading text-xl font-bold text-text">{product.name}</h3>
-        <p className="mt-1 text-2xl font-bold text-primary">{formatPrice(product.price)}</p>
+      <div className="mb-4 flex items-start gap-3">
+        {product.icon && (
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-light">
+            <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d={product.icon} />
+            </svg>
+          </div>
+        )}
+        <div>
+          <h3 className="font-heading text-xl font-bold text-text">{product.name}</h3>
+          <span className="mt-1 inline-block rounded-full bg-primary-light px-3 py-1 text-sm font-bold text-primary">{formatPrice(product.price)}</span>
+        </div>
       </div>
 
       <ul className="mb-6 space-y-2">

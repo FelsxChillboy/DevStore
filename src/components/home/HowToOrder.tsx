@@ -9,8 +9,12 @@ const STEPS = [
 
 export default function HowToOrder() {
   return (
-    <section id="cara-order" className="bg-white py-20 md:py-28 border-t border-border">
-      <div className="mx-auto max-w-7xl px-4">
+    <section id="cara-order" className="relative overflow-hidden bg-white py-20 md:py-28">
+      <div className="divider-gradient" />
+      <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-primary/5 blur-3xl animate-float" />
+      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-accent/5 blur-3xl animate-float-delayed" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4">
         <div className="mx-auto max-w-3xl text-center">
           <span className="badge border-primary/20 bg-primary-light text-primary mb-4">Cara Order</span>
           <h2 className="font-heading text-3xl font-bold text-text md:text-4xl">Gampang Banget, Tinggal Ikuti!</h2>
@@ -24,6 +28,8 @@ export default function HowToOrder() {
             {STEPS.map((step, i) => (
               <div
                 key={step.num}
+                data-aos="fade-up"
+                data-aos-delay={String(i * 100)}
                 className={`flex flex-col items-center gap-3 rounded-xl border border-border bg-white p-6 text-center transition-all duration-300 hover:border-primary/20 hover:shadow-md ${
                   i % 2 === 1 ? 'md:translate-y-12' : ''
                 }`}

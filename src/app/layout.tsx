@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import LoadingScreen from '@/components/layout/LoadingScreen'
+import LenisProvider from '@/components/providers/LenisProvider'
 import { OrgJsonLd, WebSiteJsonLd } from '@/components/ui/JsonLd'
 import './globals.css'
 
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen antialiased">
         <OrgJsonLd />
         <WebSiteJsonLd />
-        <LoadingScreen>{children}</LoadingScreen>
+        <LoadingScreen><LenisProvider>{children}</LenisProvider></LoadingScreen>
       </body>
     </html>
   )
