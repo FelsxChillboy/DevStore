@@ -25,8 +25,9 @@ export function generateStaticParams() {
   return Object.keys(demos).map((slug) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const demo = demos[params.slug]
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const demo = demos[slug]
   if (!demo) return { title: 'Demo Tidak Ditemukan - DevStore' }
 
   return {
@@ -35,15 +36,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function DemoPage({ params }: { params: { slug: string } }) {
-  const demo = demos[params.slug]
+export default async function DemoPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const demo = demos[slug]
   if (!demo) notFound()
 
   const DemoComponent = demo.component
-  const product = getProductBySlug(params.slug)
+  const product = getProductBySlug(slug)
 
   return (
-    <DemoShelf productName={demo.name} slug={params.slug}>
+    <DemoShelf productName={demo.name} slug={slug}>
       <DemoComponent />
     </DemoShelf>
   )

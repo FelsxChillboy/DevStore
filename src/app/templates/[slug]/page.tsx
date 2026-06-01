@@ -11,8 +11,9 @@ export function generateStaticParams() {
   return [{ slug: 'kuliner' }, { slug: 'fashion' }, { slug: 'jasa' }]
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const template = getTemplateBySlug(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const template = getTemplateBySlug(slug)
   if (!template) return { title: 'Template Tidak Ditemukan - DevStore' }
 
   const url = `https://dev-store-xi.vercel.app/templates/${template.slug}`
@@ -31,8 +32,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function TemplatePreviewPage({ params }: { params: { slug: string } }) {
-  const template = getTemplateBySlug(params.slug)
+export default async function TemplatePreviewPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const template = getTemplateBySlug(slug)
   if (!template) notFound()
 
   const waUrl = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(template.waText)}`
