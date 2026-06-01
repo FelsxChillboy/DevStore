@@ -25,4 +25,5 @@ export interface Product {
   previewUrls?: { name: string; url: string }[]
   briefUrl?: string
   icon?: string
+  image?: string
 }

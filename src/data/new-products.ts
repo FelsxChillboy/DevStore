@@ -1,4 +1,5 @@
 import { Product } from '@/lib/utils'
+import { productPreview } from '@/lib/placeholder'
 
 export const newProducts: Product[] = [
   {
@@ -6,6 +7,7 @@ export const newProducts: Product[] = [
     slug: 'devkit-components',
     name: 'DevKit Components',
     category: 'template',
+    image: productPreview('DevKit Components', 'template'),
     price: 35000,
     features: ['20+ komponen Tailwind siap pakai', 'Navbar, Hero, Pricing, Footer, dll', 'Dark & Light mode', 'Dokumentasi lengkap'],
     badge: 'Baru',
@@ -18,6 +20,7 @@ export const newProducts: Product[] = [
     slug: 'coming-soon-template',
     name: 'Coming Soon Template',
     category: 'template',
+    image: productPreview('Coming Soon Template', 'template'),
     price: 25000,
     features: ['Landing page "Coming Soon"', 'Animasi countdown timer', 'Form waitlist untuk email', 'Siap deploy dalam 5 menit'],
     badge: 'Baru',
@@ -30,6 +33,7 @@ export const newProducts: Product[] = [
     slug: 'link-in-bio-template',
     name: 'Link-in-Bio Template',
     category: 'template',
+    image: productPreview('Link-in-Bio Template', 'template'),
     price: 20000,
     features: ['Personal link page keren', 'Custom domain support', 'Analytics siap pakai', 'Self-hosted, bukan SaaS'],
     badge: 'Baru',
@@ -42,6 +46,7 @@ export const newProducts: Product[] = [
     slug: 'resume-cv-website',
     name: 'Resume/CV Website',
     category: 'template',
+    image: productPreview('Resume/CV Website', 'template'),
     price: 30000,
     features: ['Template CV online satu halaman', 'Section: pengalaman, skill, pendidikan', 'Download PDF otomatis', 'ATS-friendly layout'],
     badge: 'Baru',

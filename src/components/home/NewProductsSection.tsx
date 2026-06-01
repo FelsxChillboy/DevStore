@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { newProducts } from '@/data/new-products'
 import { formatPrice, Product } from '@/lib/utils'
 
@@ -9,11 +10,17 @@ function NewProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <div className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 ${product.cardClass}`}>
-      <div className="absolute top-3 right-3">
-        <span className={`badge border-transparent ${product.badgeColor}`}>{product.badge}</span>
-      </div>
-
+    <div className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 ${product.cardClass}`}>
+      {product.image && (
+        <Link href={`/produk/${product.slug}`} className="block aspect-video overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </Link>
+      )}
+      <div className="p-6">
       <div className="mb-4 flex items-start gap-3">
         {product.icon && (
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-light">
@@ -42,6 +49,7 @@ function NewProductCard({ product }: { product: Product }) {
       <button onClick={() => openModal(product.id, product.category)} className="btn-primary w-full text-sm">
         Pesan Sekarang
       </button>
+      </div>
     </div>
   )
 }

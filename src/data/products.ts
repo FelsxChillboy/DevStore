@@ -1,4 +1,5 @@
 import { Product } from '@/lib/utils'
+import { productPreview } from '@/lib/placeholder'
 import { newProducts } from './new-products'
 
 export const templates: Product[] = [
@@ -7,6 +8,7 @@ export const templates: Product[] = [
     slug: 'portfolio-basic',
     name: 'Portfolio Basic',
     category: 'template',
+    image: productPreview('Portfolio Basic', 'template'),
     price: 25000,
     features: ['1 halaman', 'Responsive mobile & desktop', 'HTML/CSS/JS murni', 'Tanpa revisi'],
     badge: 'Terlaris',
@@ -19,6 +21,7 @@ export const templates: Product[] = [
     slug: 'portfolio-pro',
     name: 'Portfolio Pro',
     category: 'template',
+    image: productPreview('Portfolio Pro', 'template'),
     price: 50000,
     features: ['Multi halaman (4-5)', 'Animasi premium AOS', 'Dark/Light mode', '1x revisi minor'],
     badge: 'Recommended',
@@ -31,6 +34,7 @@ export const templates: Product[] = [
     slug: 'portfolio-premium',
     name: 'Portfolio Premium',
     category: 'template',
+    image: productPreview('Portfolio Premium', 'template'),
     price: 100000,
     features: ['Custom design sesuai brand', 'CMS sederhana (JSON-based)', 'SEO ready', '3x revisi'],
     badge: 'Best Value',
@@ -46,6 +50,7 @@ export const services: Product[] = [
     slug: 'jasa-portfolio-starter',
     name: 'Jasa Portfolio Starter',
     category: 'service',
+    image: productPreview('Jasa Portfolio Starter', 'service'),
     price: 75000,
     features: ['Kirim CV → portfolio 1 halaman', 'Desain profesional', 'Hosting gratis 1 bulan', 'Pengerjaan 3 hari kerja'],
     badge: 'Hemat',
@@ -58,6 +63,7 @@ export const services: Product[] = [
     slug: 'jasa-portfolio-professional',
     name: 'Jasa Portfolio Professional',
     category: 'service',
+    image: productPreview('Jasa Portfolio Professional', 'service'),
     price: 150000,
     features: ['CV → portfolio multi halaman', 'Foto profesional editing', 'Copywriting portfolio', 'Pengerjaan 5 hari kerja'],
     badge: 'Populer',
@@ -70,6 +76,7 @@ export const services: Product[] = [
     slug: 'jasa-portfolio-executive',
     name: 'Jasa Portfolio Executive',
     category: 'service',
+    image: productPreview('Jasa Portfolio Executive', 'service'),
     price: 250000,
     features: ['CV → portfolio premium', 'Domain .my.id 1 tahun', 'Hosting 1 tahun', 'Pengerjaan 7 hari kerja'],
     badge: 'Premium',
@@ -85,6 +92,7 @@ export const umkm: Product[] = [
     slug: 'template-website-umkm',
     name: 'Template Website UMKM',
     category: 'umkm',
+    image: productPreview('Template Website UMKM', 'umkm'),
     priceDisplay: 'Rp50K–200K',
     price: 50000,
     tagline: 'Buat sekali, jual berkali-kali',
@@ -104,6 +112,7 @@ export const umkm: Product[] = [
     slug: 'jasa-landing-page-umkm',
     name: 'Jasa Landing Page UMKM',
     category: 'umkm',
+    image: productPreview('Jasa Landing Page UMKM', 'umkm'),
     priceDisplay: 'Rp150K–500K',
     price: 150000,
     tagline: 'Waktu & skill',
@@ -119,6 +128,7 @@ export const umkm: Product[] = [
     slug: 'template-ppt-presentasi',
     name: 'Template PPT Presentasi',
     category: 'umkm',
+    image: productPreview('Template PPT Presentasi', 'umkm'),
     priceDisplay: 'Rp15K–75K',
     price: 15000,
     tagline: 'Buat sekali, jual berkali-kali',

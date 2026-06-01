@@ -71,6 +71,16 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             { label: product.name },
           ]} />
 
+          {product.image && (
+            <div className="mb-8 overflow-hidden rounded-2xl border">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full"
+              />
+            </div>
+          )}
+
           <div className={`rounded-2xl border p-8 md:p-10 ${product.cardClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
               <div>
