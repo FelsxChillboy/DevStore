@@ -1,7 +1,7 @@
 'use client'
 
 import { umkm } from '@/data/products'
-import { Product } from '@/lib/utils'
+import { formatPrice, Product } from '@/lib/utils'
 import Link from 'next/link'
 
 function UMKMProductCard({ product }: { product: Product }) {
@@ -32,7 +32,7 @@ function UMKMProductCard({ product }: { product: Product }) {
           )}
           <div>
             <h3 className="font-heading text-xl font-bold text-text">{product.name}</h3>
-            <span className="mt-1 inline-block rounded-full bg-primary-light px-3 py-1 text-sm font-bold text-primary">{product.priceDisplay || product.price}</span>
+            <span className="mt-1 inline-block rounded-full bg-primary-light px-3 py-1 text-sm font-bold text-primary">{product.priceDisplay || formatPrice(product.price)}</span>
           </div>
         </div>
         <span className={`badge border-transparent ${product.badgeColor}`}>{product.badge}</span>

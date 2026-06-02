@@ -10,7 +10,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb'
 import { ProductJsonLd } from '@/components/ui/JsonLd'
 
 export function generateStaticParams() {
-  const all = [...templates, ...services, ...umkm]
+  const all = [...templates, ...services, ...umkm, ...newProducts]
   return all.map((p) => ({ slug: p.slug }))
 }
 

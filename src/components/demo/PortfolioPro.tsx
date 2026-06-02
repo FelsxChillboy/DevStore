@@ -5,9 +5,9 @@ import { useState } from 'react'
 const pages = ['Home', 'About', 'Portfolio', 'Skills', 'Contact'] as const
 
 const projects = [
-  { title: 'E-Commerce App', desc: 'React &middot; Tailwind &middot; Node.js', img: 'https://picsum.photos/seed/ecommerce/600/400' },
-  { title: 'Dashboard CMS', desc: 'Next.js &middot; TypeScript &middot; PostgreSQL', img: 'https://picsum.photos/seed/dashboard/600/400' },
-  { title: 'Portfolio Builder', desc: 'React &middot; Framer &middot; Supabase', img: 'https://picsum.photos/seed/portfoliobuilder/600/400' },
+  { title: 'E-Commerce App', cat: 'web', desc: 'React &middot; Tailwind &middot; Node.js', img: 'https://picsum.photos/seed/ecommerce/600/400' },
+  { title: 'Dashboard CMS', cat: 'web', desc: 'Next.js &middot; TypeScript &middot; PostgreSQL', img: 'https://picsum.photos/seed/dashboard/600/400' },
+  { title: 'Portfolio Builder', cat: 'mobile', desc: 'React &middot; Framer &middot; Supabase', img: 'https://picsum.photos/seed/portfoliobuilder/600/400' },
 ]
 
 const skillCategories = [
@@ -69,7 +69,7 @@ export default function PortfolioProDemo() {
     }, 150)
   }
 
-  const filteredProjects = filter === 'all' ? projects : projects.filter((_, i) => filter === 'web' ? i < 2 : i >= 2)
+  const filteredProjects = filter === 'all' ? projects : projects.filter((p) => p.cat === filter)
 
   return (
     <div className={`${bg} min-h-screen transition-colors duration-300`}>

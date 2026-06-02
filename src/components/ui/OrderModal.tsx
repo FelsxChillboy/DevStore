@@ -25,6 +25,7 @@ export default function OrderModal() {
   const [productType, setProductType] = useState<string>('template')
   const [submitting, setSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [popupBlocked, setPopupBlocked] = useState(false)
 
   const isService = productType === 'service'
 
@@ -88,7 +89,13 @@ Mohon segera dikonfirmasi, terima kasih!`
 Mohon konfirmasinya, terima kasih!`
 
     setSubmitting(true)
-    window.open(buildWaUrl(message), '_blank')
+    setPopupBlocked(false)
+    const opened = window.open(buildWaUrl(message), '_blank')
+    if (!opened) {
+      setPopupBlocked(true)
+      setSubmitting(false)
+      return
+    }
     setSubmitting(false)
     setShowSuccess(true)
     setTimeout(() => {
@@ -159,6 +166,14 @@ Mohon konfirmasinya, terima kasih!`
             <button type="submit" disabled={submitting} className="btn-primary w-full text-base">
               {submitting ? 'Memproses...' : 'Submit & Hubungi WA'}
             </button>
+            {popupBlocked && (
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-center text-sm text-red-700">
+                Popup terblokir. 
+                <a href={buildWaUrl('')} target="_blank" rel="noopener noreferrer" className="ml-1 font-semibold underline">
+                  Klik di sini untuk buka WhatsApp manual
+                </a>
+              </div>
+            )}
             <p className="text-center text-xs text-text-muted">Dengan klik submit, kamu akan diarahkan ke WhatsApp admin</p>
           </form>
         </div>
